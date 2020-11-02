@@ -26,4 +26,4 @@ _(Screenshot showing Twitch notice when an adblocker is used.  Because not loadi
 8. To update, repeat steps 2-7 (except edit the saved script instead of adding a new one)
 
 ## Credits
-- simple-hacker - [initial gist & continuous updates that this is based upon](https://gist.github.com/simple-hacker/ddd81964b3e8bca47e0aead5ad19a707/)
+- [simple-hacker](https://github.com/simple-hacker) - [initial gist & continuous updates that this is based upon](https://gist.github.com/simple-hacker/ddd81964b3e8bca47e0aead5ad19a707/)
