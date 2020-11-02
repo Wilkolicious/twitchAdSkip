@@ -9,7 +9,7 @@ This is a script injectable by TamperMonkey (or similar) that attempts to bypass
 
 ## Why
 Twitch has very recently & noticeably ramped up its anti-adblock efforts in an effort to increase ad viewership across its platform, presumably to increase profits.
-There is currently a non-official workaround for blocking pre-roll (before stream starts) ads, but mid-roll ads are half blocked.  Currently, mid-roll _ads_ are blocked, but a pattern is emerging that Twitch are interrupting stream viewing with a notice regarding "third party tool[s]", specifically for those with ad-blockers in an effort to dissuade their use.
+There is currently a non-official workaround for blocking pre-roll (before stream starts) ads, but mid-roll ads are half blocked.  Currently, mid-roll _ads_ are blocked, but a pattern is emerging that Twitch is interrupting stream viewing with a notice regarding "third party tool[s]", specifically for those with ad-blockers in an effort to dissuade their use.
 
 ![image](https://user-images.githubusercontent.com/16191979/97927844-b45ba100-1d5d-11eb-9149-b3bfcc4ee7cf.png)
 _(Screenshot showing Twitch notice when an adblocker is used.  Because not loading ads is "impacting site performance", and watching ads results in "the best Twitch experience". /s  Blatantly lying to the consumer.)_
@@ -24,3 +24,6 @@ _(Screenshot showing Twitch notice when an adblocker is used.  Because not loadi
 6. Save (Ctrl-s works, as if saving a Spreadsheet or Document)
 7. Reload any twitch streams
 8. To update, repeat steps 2-7 (except edit the saved script instead of adding a new one)
+
+## Credits
+- simple-hacker - [initial gist & updates](https://gist.github.com/simple-hacker/ddd81964b3e8bca47e0aead5ad19a707/)
