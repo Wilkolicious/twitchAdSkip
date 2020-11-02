@@ -1,14 +1,14 @@
 // ==UserScript==
-// @name         twitchAdRefreshV2
-// @namespace    https://www.twitch.tv/
-// @version      1.0
-// @description  TBD
-// @author       SimpleHacker & Wilkolicious
-// @match        https://www.twitch.tv/*
-// @grant        none
-// @homepageURL
-// @updateURL
-// @downloadURL
+// @name          twitchAdRefreshV2
+// @namespace     https://www.twitch.tv/
+// @version       1.0
+// @description   TBD
+// @author        SimpleHacker & Wilkolicious
+// @match         https://www.twitch.tv/*
+// @grant         none
+// @homepageURL   https://github.com/Wilkolicious/twitchAdRefreshV2
+// @updateURL     https://raw.githubusercontent.com/Wilkolicious/twitchAdRefreshV2/main/twitchAdRefreshV2.js
+// @downloadURL   https://raw.githubusercontent.com/Wilkolicious/twitchAdRefreshV2/main/twitchAdRefreshV2.js
 // ==/UserScript==
 
 (function () {
