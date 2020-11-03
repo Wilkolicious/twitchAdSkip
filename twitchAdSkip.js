@@ -31,8 +31,14 @@
   // Volume vals
   let videoNodeVolCurrent;
   let adLaunched = false;
+  
+  //dirty bool hack to fix "undefined" console message
+  let failedAfterMaxRetries = false;
 
   const log = function (logType, message) {
+    if (failedAfterMaxRetries) {
+      return;
+    }
     return console[logType](`${scriptName}: ${message}`);
   };
   const getFfzResetButton = function () {
@@ -170,6 +176,7 @@
       .catch((e) => {
         if (retries <= 0) {
           log('error', `${actionDescription} - failed after ${maxRetries} retries.`)
+          failedAfterMaxRetries = true;
           return Promise.reject(e);
         }
         log('warn', `${actionDescription} - retrying another ${retries} time(s).`);
