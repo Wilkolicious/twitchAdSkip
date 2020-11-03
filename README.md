@@ -1,5 +1,5 @@
 # twitchAdRefreshV2
-Based upon `refreshTwitchAd` (see credits)
+Based upon `refreshTwitchAd.js` (see credits)
 
 ## Purpose
 This is a script injectable by TamperMonkey (or similar) that attempts to bypass/skip Twitch's obnoxious mid-roll ad process.
@@ -28,10 +28,15 @@ _(Screenshot showing Twitch notice when an adblocker is used.  Because not loadi
 8. Reload any twitch streams
 9. To update, repeat steps 2-7 (except edit the saved script instead of adding a new one)
 
+## Limitations
+- There will be a small delay (~1 second) when the mid-roll ad runs where the stream refreshes.  Really, we need to find a way to stop the ad process before it reaches the player but that requires reverse engineers of Twitch's SPA.
+- The script attempts to maintain the volume level between refreshes, but there may be scenarios where it does not.
+- If the current adblock mechanism ([currently here](https://github.com/odensc/ttv-ublock)) no longer works, then the stream will keep refreshing until Twitch's app stops pushing an ad.
+
 ## Privacy
 - I don't want your data or want to handle it in any way. 
 - The code will always remain auditable here.  
-- I am also not a nameless face/ghost like the [new owners of NanoAdblocker](https://github.com/NanoAdblocker/NanoCore/issues/362).
+- I am not a nameless face/ghost like the [new owners of NanoAdblocker](https://github.com/NanoAdblocker/NanoCore/issues/362).
 
 The update URLs set in the UserScript are only for ease of use but will mean that updates are sourced directly from the latest commit in this repo.  If you do not trust the code here or want automatic updates, then disable script updates in your UserScript manager and/or remove the following lines from the script in your UserScript manager:
 ```js
