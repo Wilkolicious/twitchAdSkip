@@ -1,4 +1,4 @@
-# twitchAdRefreshV2
+# twitchAdSkip
 Based upon `refreshTwitchAd.js` (see credits)
 
 ## Purpose
@@ -17,7 +17,7 @@ _(Screenshot showing Twitch notice when an adblocker is used.  Because not loadi
 
 ## Installation (TamperMonkey, but adaptable to other UserScript managers)
 1. Ensure that your browser meets the requirements above
-2. Copy the [script](https://raw.githubusercontent.com/Wilkolicious/twitchAdRefreshV2/main/twitchAdRefreshV2.js) to your clipboard
+2. Copy the [script](https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js) to your clipboard
 3. Open your TamperMonkey dashboard
 4. Find and press the new script button.  In TamperMonkey, this can be found as a tab in the dashboard with a plus-in-a-box icon
 ![image](https://user-images.githubusercontent.com/16191979/97928662-6d6eab00-1d5f-11eb-9dc6-30a6d266e2dd.png)
@@ -40,8 +40,8 @@ _(Screenshot showing Twitch notice when an adblocker is used.  Because not loadi
 
 The update URLs set in the UserScript are only for ease of use but will mean that updates are sourced directly from the latest commit in this repo.  If you do not trust the code here or want automatic updates, then disable script updates in your UserScript manager and/or remove the following lines from the script in your UserScript manager:
 ```js
-// @updateURL     https://raw.githubusercontent.com/Wilkolicious/twitchAdRefreshV2/main/twitchAdRefreshV2.js
-// @downloadURL   https://raw.githubusercontent.com/Wilkolicious/twitchAdRefreshV2/main/twitchAdRefreshV2.js
+// @updateURL     https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js
+// @downloadURL   https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js
 ```
 
 ## Credits
