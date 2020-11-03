@@ -32,6 +32,7 @@ _(Screenshot showing Twitch notice when an adblocker is used.  Because not loadi
 - There will be a small delay (~1 second) when the mid-roll ad runs where the stream refreshes.  Really, we need to find a way to stop the ad process before it reaches the player but that requires reverse engineering of Twitch's SPA or some undiscovered adblock rule.
 - The script attempts to maintain the volume level between refreshes, but there may be scenarios where it does not.
 - If the current adblock mechanism ([currently here](https://github.com/odensc/ttv-ublock)) no longer works, then the stream will keep refreshing until Twitch's app stops pushing an ad.
+- Twitch's / AWS IVS engineers are currently breaking these kinds of workarounds/bypasses often.  They are likely reading the discussion threads and deliberately breaking user scipts.  Hi Twitch engineer if you're reading this.
 
 ## Privacy
 - I don't want your data or want to handle it in any way. 
