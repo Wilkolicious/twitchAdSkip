@@ -20,7 +20,7 @@
   const videoPlayerSel = '[data-a-target="video-player"]';
   const videoPlayervolSliderSel = '[data-a-target="player-volume-slider"]';
   const videoNodeSel = 'video';
-  const postFixVolWaitTime = 5000;
+  const postFixVolWaitTime = 2000;
   const nodeTypesToCheck = [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE];
 
   // Volume vals
