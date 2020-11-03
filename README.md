@@ -13,7 +13,7 @@ Twitch has very recently & noticeably ramped up its anti-adblock efforts in an e
 There is currently a non-official workaround for blocking pre-roll (before stream starts) ads, but mid-roll ads are half blocked.  Currently, mid-roll _ads_ are blocked, but a pattern is emerging that Twitch is interrupting stream viewing with a notice regarding "third party tool[s]", specifically for those with ad-blockers in an effort to dissuade their use.
 
 ![image](https://user-images.githubusercontent.com/16191979/97927844-b45ba100-1d5d-11eb-9149-b3bfcc4ee7cf.png)
-_(Screenshot showing Twitch notice when an adblocker is used.  Because not loading ads is "impacting site performance", and watching ads results in "the best Twitch experience". /s  Blatantly lying to the consumer.)_
+_(Screenshot showing Twitch notice when an adblocker is used.  Because not loading ads is "impacting site performance", and watching ads results in "the best Twitch experience" /s. Blatantly lying to the consumer.)_
 
 ## Installation (TamperMonkey, but adaptable to other UserScript managers)
 1. Ensure that your browser meets the requirements above
@@ -29,7 +29,7 @@ _(Screenshot showing Twitch notice when an adblocker is used.  Because not loadi
 9. To update, repeat steps 2-8 (except edit the saved script instead of adding a new one)
 
 ## Limitations
-- There will be a small delay (~1 second) when the mid-roll ad runs where the stream refreshes.  Really, we need to find a way to stop the ad process before it reaches the player but that requires reverse engineers of Twitch's SPA.
+- There will be a small delay (~1 second) when the mid-roll ad runs where the stream refreshes.  Really, we need to find a way to stop the ad process before it reaches the player but that requires reverse engineering of Twitch's SPA or some undiscovered adblock rule.
 - The script attempts to maintain the volume level between refreshes, but there may be scenarios where it does not.
 - If the current adblock mechanism ([currently here](https://github.com/odensc/ttv-ublock)) no longer works, then the stream will keep refreshing until Twitch's app stops pushing an ad.
 
@@ -46,3 +46,6 @@ The update URLs set in the UserScript are only for ease of use but will mean tha
 
 ## Credits
 - [simple-hacker](https://github.com/simple-hacker) - [initial gist & continuous revisions that this is based upon](https://gist.github.com/simple-hacker/ddd81964b3e8bca47e0aead5ad19a707/)
+
+## License
+MIT
