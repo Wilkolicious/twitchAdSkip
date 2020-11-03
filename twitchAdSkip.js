@@ -131,7 +131,7 @@
             if (!videoPlayerVolSliderEl) {
               videoPlayerVolSliderEl = getVideoPlayerVolSliderEl(videoPlayerEl);
             }
-            videoPlayerEl.value = videoPlayerVolSliderCurrent;
+            videoPlayerVolSliderEl.value = videoPlayerVolSliderCurrent;
 
             adLaunched = false;
           }, postFixVolWaitTime);
