@@ -26,7 +26,7 @@ _(Screenshot showing Twitch notice when an adblocker is used.  Because not loadi
 7. Ensure that the script is enabled, e.g. green: 
 ![image](https://user-images.githubusercontent.com/16191979/97933577-1242b580-1d6b-11eb-8af5-018c06ed81ae.png)
 8. Reload any twitch streams
-9. To update, repeat steps 2-7 (except edit the saved script instead of adding a new one)
+9. To update, repeat steps 2-8 (except edit the saved script instead of adding a new one)
 
 ## Limitations
 - There will be a small delay (~1 second) when the mid-roll ad runs where the stream refreshes.  Really, we need to find a way to stop the ad process before it reaches the player but that requires reverse engineers of Twitch's SPA.
