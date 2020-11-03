@@ -2,9 +2,10 @@
 Based upon `refreshTwitchAd.js` (see credits)
 
 ## Purpose
-This is a script injectable by TamperMonkey (or similar) that attempts to bypass/skip Twitch's obnoxious mid-roll ad process.
+This is a script injectable by TamperMonkey (or similar) that attempts to bypass/skip Twitch's obnoxious mid-roll ad process when used in conjunction with effective adblocking filters/rules.  This script itself *won't block ads* - it will skip the placeholder presented by Twitch (see purple image below under `Why`) when ads are effectively blocked.
 
 ## Requirements
+- Ads adblocked (preferably with [uBlock Origin](https://github.com/gorhill/uBlock) + [odensc's ttv-ublock workaround](https://github.com/odensc/ttv-ublock))
 - UserScript manager browser extension, e.g. [TamperMonkey](https://www.tampermonkey.net/) or [GreaseMonkey](https://www.greasespot.net/)
 - [FrankerFaceZ extension](https://www.frankerfacez.com/)
 
