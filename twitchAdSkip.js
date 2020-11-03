@@ -1,20 +1,20 @@
 // ==UserScript==
-// @name          twitchAdRefreshV2
+// @name          twitchAdSkip
 // @namespace     https://www.twitch.tv/
 // @version       1.0
 // @description   TBD
-// @author        SimpleHacker & Wilkolicious
+// @author        simple-hacker & Wilkolicious
 // @match         https://www.twitch.tv/*
 // @grant         none
-// @homepageURL   https://github.com/Wilkolicious/twitchAdRefreshV2
-// @updateURL     https://raw.githubusercontent.com/Wilkolicious/twitchAdRefreshV2/main/twitchAdRefreshV2.js
-// @downloadURL   https://raw.githubusercontent.com/Wilkolicious/twitchAdRefreshV2/main/twitchAdRefreshV2.js
+// @homepageURL   https://github.com/Wilkolicious/twitchAdSkip 
+// @updateURL     https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js
+// @downloadURL   https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js
 // ==/UserScript==
 
 (function () {
   'use strict';
 
-  const scriptName = 'twitchAdRefreshV2';
+  const scriptName = 'twitchAdSkip';
   const adTestSel = '[data-test-selector="ad-banner-default-text"]';
   const ffzResetBtnSel = '[data-a-target="ffz-player-reset-button"]';
   const videoPlayerSel = '[data-a-target="video-player"]';
