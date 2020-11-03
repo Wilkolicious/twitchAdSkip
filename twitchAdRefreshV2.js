@@ -176,7 +176,6 @@
     log('error', 'Error - could not find video player.');
   }
 
-  // window.onload = function() {
   log('info', 'Page loaded - attempting to find video player & attach MO.');
   findVideoPlayer();
 
@@ -188,5 +187,4 @@
     log('info', 'Attempting to find video player & attach MO after history change.')
     findVideoPlayer();
   };
-  // }
 })();
