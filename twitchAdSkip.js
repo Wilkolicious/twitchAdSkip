@@ -6,7 +6,7 @@
 // @author        simple-hacker & Wilkolicious
 // @match         https://www.twitch.tv/*
 // @grant         none
-// @homepageURL   https://github.com/Wilkolicious/twitchAdSkip 
+// @homepageURL   https://github.com/Wilkolicious/twitchAdSkip
 // @updateURL     https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js
 // @downloadURL   https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js
 // ==/UserScript==
@@ -22,6 +22,11 @@
   const videoNodeSel = 'video';
   const postFixVolWaitTime = 2000;
   const nodeTypesToCheck = [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE];
+
+  //
+  const maxRetriesFindVideoPlayer = 5;
+  const maxRetriesVolListener = 5;
+  const maxRetriesVideoPlayerObserver = 5;
 
   // Volume vals
   let videoNodeVolCurrent;
@@ -47,10 +52,10 @@
     return getElWithOptContext(videoPlayerSel, context);
   };
 
-  const attachMO = function (videoPlayerEl) {
+  const attachMO = async function (videoPlayerEl) {
     let resetButton = getFfzResetButton();
 
-    const observer = new MutationObserver(function (mutations) {
+    const videoPlayerObserver = new MutationObserver(function (mutations) {
       for (const muation of mutations) {
         for (const node of muation.addedNodes) {
           const canCheckNode = nodeTypesToCheck.includes(node.nodeType);
@@ -134,13 +139,14 @@
       }
     });
 
-    observer.observe(videoPlayerEl, {
+    videoPlayerObserver.observe(videoPlayerEl, {
       childList: true,
       subtree: true
     });
+    log('info', 'Video player observer attached');
   };
 
-  const listenForVolumeChanges = function (videoPlayerEl) {
+  const listenForVolumeChanges = async function (videoPlayerEl) {
     const videoNodeEl = getVideoNodeEl(videoPlayerEl);
 
     // Initial load val
@@ -159,32 +165,72 @@
     });
   };
 
-  const findVideoPlayer = function () {
-    const videoPlayerEl = document.querySelector(videoPlayerSel);
+  const retryWrap = function(fnToRetry, args, intervalInMs, maxRetries, actionDescription) {
+    const retry = (fn, retries = 3) => fn()
+      .catch((e) => {
+        if (retries <= 0) {
+          log('error', `${actionDescription} - failed after ${maxRetries} retries.`)
+          return Promise.reject(e);
+        }
+        log('warn', `${actionDescription} - retrying another ${retries} time(s).`);
+        return retry(fn, --retries)
+      });
 
-    if (videoPlayerEl) {
+    const delay = ms => new Promise((resolve) => setTimeout(resolve, ms));
+    const delayError = (fn, args, ms) => () => fn(...args).catch((e) => delay(ms).then((y) => Promise.reject(e)));
+    return retry(delayError(fnToRetry, args, intervalInMs), maxRetries);
+  };
+
+  const spawnFindVideoPlayerEl = async function() {
+    const actionDescription = 'Finding video player';
+    log('info', `${actionDescription}...`);
+    const findVideoPlayerEl = async () => {
+      const videoPlayerEl = document.querySelector(videoPlayerSel);
+      if (!videoPlayerEl) {
+        return Promise.reject();
+      }
+      return videoPlayerEl;
+    };
+    return await retryWrap(findVideoPlayerEl, [], 2000, maxRetriesFindVideoPlayer, actionDescription);
+  };
+
+  const spawnVolumeChangeListener = async function(videoPlayerEl) {
+    const actionDescription = 'Listening for volume changes';
+    log('info', `${actionDescription}...`);
+    retryWrap(listenForVolumeChanges, [videoPlayerEl], 2000, maxRetriesVolListener, actionDescription);
+  };
+
+  const spawnVideoPlayerAdSkipObservers = async function(videoPlayerEl) {
+    const actionDescription = 'Attaching MO';
+    log('info', `${actionDescription}...`);
+    retryWrap(attachMO, [videoPlayerEl], 2000, maxRetriesVideoPlayerObserver, actionDescription);
+  };
+
+  const spawnObservers = async function () {
+    try {
+      const videoPlayerEl = await spawnFindVideoPlayerEl();
+
+      if (!videoPlayerEl) {
+        throw new Error('Could not find video player.');
+      }
       log('info', 'Success - video player found.');
 
-      log('info', 'Listening for volume changes...');
-      listenForVolumeChanges(videoPlayerEl);
-
-      log('info', 'Attaching MO...');
-      attachMO(videoPlayerEl);
-      return;
+      spawnVolumeChangeListener(videoPlayerEl);
+      spawnVideoPlayerAdSkipObservers(videoPlayerEl);
+    } catch (error) {
+      log('error', error);
     }
-
-    log('error', 'Error - could not find video player.');
   }
 
-  log('info', 'Page loaded - attempting to find video player & attach MO.');
-  findVideoPlayer();
+  log('info', 'Page loaded - attempting to spawn observers...');
+  spawnObservers();
 
   log('info', 'Overloading history push state')
   var pushState = history.pushState;
   history.pushState = function () {
     pushState.apply(history, arguments);
 
-    log('info', 'Attempting to find video player & attach MO after history change.')
-    findVideoPlayer();
+    log('info', 'History change - attempting to spawn observers...')
+    spawnObservers();
   };
 })();
