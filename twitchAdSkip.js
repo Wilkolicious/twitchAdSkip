@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name          twitchAdSkip
 // @namespace     https://www.twitch.tv/
-// @version       1.0
-// @description   TBD
+// @version       2.0
+// @description   Script to skip ad placeholder (i.e. purple screen of doom when ads are blocked)
 // @author        simple-hacker & Wilkolicious
 // @match         https://www.twitch.tv/*
 // @grant         none
+// @require       https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.11.0/underscore-min.js
 // @homepageURL   https://github.com/Wilkolicious/twitchAdSkip
 // @updateURL     https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js
 // @downloadURL   https://raw.githubusercontent.com/Wilkolicious/twitchAdSkip/main/twitchAdSkip.js
@@ -32,6 +33,7 @@
   let videoNodeVolCurrent;
   let adLaunched = false;
 
+  // Helpers //
   const log = function (logType, message) {
     return console[logType](`${scriptName}: ${message}`);
   };
@@ -56,8 +58,8 @@
     let resetButton = getFfzResetButton();
 
     const videoPlayerObserver = new MutationObserver(function (mutations) {
-      for (const muation of mutations) {
-        for (const node of muation.addedNodes) {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
           const canCheckNode = nodeTypesToCheck.includes(node.nodeType);
           if (!canCheckNode) {
             continue;
@@ -117,17 +119,13 @@
               videoNodeEl = getVideoNodeEl(videoPlayerEl);
             }
 
-            // Prefer volume slider as source of truth for now
-            if (videoPlayerVolSliderCurrent !== videoNodeVolCurrent) {
-              videoNodeVolCurrent = videoPlayerVolSliderCurrent;
-            }
-
             // Fix video vol
             const preFixVol = videoNodeEl.volume;
             videoNodeEl.volume = videoNodeVolCurrent;
             log('info', `Post-fixed volume from reset val of '${preFixVol}' -> '${videoNodeVolCurrent}'`);
 
             // Fix video player vol slider
+            // TODO: this may not work due to this input being tied to the js framework component
             if (!videoPlayerVolSliderEl) {
               videoPlayerVolSliderEl = getVideoPlayerVolSliderEl(videoPlayerEl);
             }
@@ -149,20 +147,47 @@
   const listenForVolumeChanges = async function (videoPlayerEl) {
     const videoNodeEl = getVideoNodeEl(videoPlayerEl);
 
+    if (!videoNodeEl) {
+      throw new Error('Video player element not found.  If it is expected that there is no video on the current page (e.g. Twitch directory), then ignore this error.');
+    }
+
     // Initial load val
     videoNodeVolCurrent = videoNodeEl.volume.toFixed(2);
     log('info', `Initial volume: '${videoNodeVolCurrent}'.`);
 
-    // On change
-    videoNodeEl.addEventListener('volumechange', (event) => {
+    const videoPlayerVolSliderEl = getVideoPlayerVolSliderEl(videoPlayerEl);
+
+    if (!videoPlayerVolSliderEl) {
+      throw new Error('Video player volume slider not found.  Perhaps application is in picture-in-picture mode?');
+    }
+
+    const setCurrentVolume = (event) => {
       // Ignore any vol changes for ads
       if (document.querySelector(adTestSel) || adLaunched) {
         return;
       }
 
-      videoNodeVolCurrent = event.currentTarget.volume.toFixed(2);
+      // Always find the video node element as Twitch app may have re-created tracked element
+      videoNodeVolCurrent = getVideoNodeEl(videoPlayerEl).volume.toFixed(2);
       log('info', `Volume modified to: '${videoNodeVolCurrent}'.`);
+    };
+
+    // Standard volume change listeners
+    videoPlayerVolSliderEl.addEventListener('keyup', (event) => {
+      if (!event.key) {
+        return;
+      }
+
+      if (!['ArrowUp', 'ArrowDown'].includes(event.key)) {
+        return;
+      }
+      setCurrentVolume(event);
     });
+
+    videoPlayerVolSliderEl.addEventListener('mouseup', setCurrentVolume);
+    videoPlayerVolSliderEl.addEventListener('scroll', (event) => _.debounce(setCurrentVolume, 1000));
+
+    // TODO: FFZ scrollup & scrolldown support
   };
 
   const retryWrap = function(fnToRetry, args, intervalInMs, maxRetries, actionDescription) {
@@ -187,7 +212,7 @@
     const findVideoPlayerEl = async () => {
       const videoPlayerEl = document.querySelector(videoPlayerSel);
       if (!videoPlayerEl) {
-        return Promise.reject();
+        return Promise.reject('Video player not found.');
       }
       return videoPlayerEl;
     };
