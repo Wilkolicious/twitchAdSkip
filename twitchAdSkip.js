@@ -110,6 +110,7 @@
 
           // Cosmetic vol slider
           const videoPlayerVolSliderEl = getVideoPlayerVolSliderEl(videoPlayerEl);
+          const videoPlayerVolSliderCurrent = parseInt(videoPlayerVolSliderEl.value, 10).toFixed(2);
 
           log('info', `Triggering FFZ reset button...`);
           resetButton.dispatchEvent(eventDoubleClick);
@@ -138,6 +139,7 @@
             if (!videoPlayerVolSliderEl) {
               videoPlayerVolSliderEl = getVideoPlayerVolSliderEl(videoPlayerEl);
             }
+            videoPlayerVolSliderEl.value = videoPlayerVolSliderCurrent;
 
             const muteBtnEl = getVideoPlayerMuteBtnEl(videoPlayerEl);
             // TODO: Promisify
@@ -147,8 +149,8 @@
               muteBtnEl.dispatchEvent(eventSingleClick);
               setTimeout(() => {
                 muteBtnEl.dispatchEvent(eventSingleClick);
-              }, 500);
-            }, 500)
+              }, 200);
+            }, 2000)
 
 
             adLaunched = false;
