@@ -19,7 +19,8 @@
   const adTestSel = '[data-test-selector="ad-banner-default-text"]';
   const ffzResetBtnSel = '[data-a-target="ffz-player-reset-button"]';
   const videoPlayerSel = '[data-a-target="video-player"]';
-  const videoPlayervolSliderSel = '[data-a-target="player-volume-slider"]';
+  const videoPlayerVolSliderSel = '[data-a-target="player-volume-slider"]';
+  const videoPlayerMuteBtnSel = '[data-a-target="player-mute-unmute-button"]';
   const videoNodeSel = 'video';
   const postFixVolWaitTime = 2000;
   const nodeTypesToCheck = [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE];
@@ -32,6 +33,17 @@
   // Volume vals
   let videoNodeVolCurrent;
   let adLaunched = false;
+
+  const eventSingleClick = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+    view: window
+  });
+  const eventDoubleClick = new MouseEvent('dblclick', {
+    bubbles: true,
+    cancelable: true,
+    view: window
+  });
 
   // Helpers //
   const log = function (logType, message) {
@@ -48,7 +60,10 @@
     return getElWithOptContext(videoNodeSel, context);
   };
   const getVideoPlayerVolSliderEl = function (context) {
-    return getElWithOptContext(videoPlayervolSliderSel, context);
+    return getElWithOptContext(videoPlayerVolSliderSel, context);
+  };
+  const getVideoPlayerMuteBtnEl = function (context) {
+    return getElWithOptContext(videoPlayerMuteBtnSel, context);
   };
   const getVideoPlayerEl = function (context) {
     return getElWithOptContext(videoPlayerSel, context);
@@ -88,7 +103,6 @@
             }
           }
 
-          // Cache current vol props //
           log('info', 'Finding video node to post-fix volume.');
           // Actual video volume
           const videoNodeEl = getVideoNodeEl(videoPlayerEl);
@@ -99,11 +113,7 @@
           const videoPlayerVolSliderCurrent = parseInt(videoPlayerVolSliderEl.value, 10).toFixed(2);
 
           log('info', `Triggering FFZ reset button...`);
-          resetButton.dispatchEvent(new MouseEvent('dblclick', {
-            bubbles: true,
-            cancelable: true,
-            view: window
-          }));
+          resetButton.dispatchEvent(eventDoubleClick);
 
           log('info', `Fixing volume to original value of '${videoNodeVolCurrent}' after interval of '${postFixVolWaitTime}' ms`);
           setTimeout(() => {
@@ -130,6 +140,18 @@
               videoPlayerVolSliderEl = getVideoPlayerVolSliderEl(videoPlayerEl);
             }
             videoPlayerVolSliderEl.value = videoPlayerVolSliderCurrent;
+
+            const muteBtnEl = getVideoPlayerMuteBtnEl(videoPlayerEl);
+            // TODO: Promisify
+            // This performs a slow double click of the mute button in an attempt to sync the volume slider with the video player volume
+            // A small delay is needed before the first click to allow the Twitch app to sync things internally
+            setTimeout(() => {
+              muteBtnEl.dispatchEvent(eventSingleClick);
+              setTimeout(() => {
+                muteBtnEl.dispatchEvent(eventSingleClick);
+              }, 200);
+            }, 2000)
+
 
             adLaunched = false;
           }, postFixVolWaitTime);
